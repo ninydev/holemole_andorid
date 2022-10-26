@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
      int maxY ;
     ConstraintLayout gamePad;
     Random rnd = new Random();
+    ImageView mole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gamePad = (ConstraintLayout)findViewById(R.id.gamePad);
+
+        mole = new ImageView(this);
+        mole.setImageResource(R.drawable.mole);
+        ConstraintLayout.LayoutParams moleLayoutParams = new ConstraintLayout.LayoutParams(
+                WRAP_CONTENT, WRAP_CONTENT);
+        moleLayoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+        moleLayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        mole.setLayoutParams(moleLayoutParams);
+
+        mole.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Ok", Toast.LENGTH_LONG);
+                Log.i("Game", "Click");
+            }
+        });;
 
         ViewTreeObserver vto = gamePad.getViewTreeObserver();
         vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -85,7 +103,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    ImageView oldHole;
+
     public void restart(View view) {
         buildGamePad();
+    }
+
+    public void moveMole(View view) {
+//        if (oldHole != null)
+//            oldHole.setImageResource(R.drawable.hole);
+        // oldHole.setImageResource(R.drawable.mole);
+
+        int count = gamePad.getChildCount();
+        oldHole = (ImageView) gamePad.getChildAt(rnd.nextInt(count));
+
+        gamePad.removeView(mole);
+        ConstraintLayout.LayoutParams holeLayoutParams =
+                (ConstraintLayout.LayoutParams) oldHole.getLayoutParams();
+        ConstraintLayout.LayoutParams moleLayoutParams =
+                (ConstraintLayout.LayoutParams) mole.getLayoutParams();
+
+        moleLayoutParams.leftMargin = holeLayoutParams.leftMargin + 20;
+        moleLayoutParams.topMargin = holeLayoutParams.topMargin - 120;
+
+        mole.setLayoutParams(moleLayoutParams);
+
+        gamePad.addView(mole);
     }
 }

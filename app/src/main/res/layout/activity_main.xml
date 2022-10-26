@@ -31,6 +31,12 @@
             android:text="Restart"
             android:onClick="restart"
             />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Move"
+            android:onClick="moveMole"
+            />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

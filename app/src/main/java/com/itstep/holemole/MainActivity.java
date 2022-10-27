@@ -9,125 +9,56 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-     int maxX;
-     int maxY ;
-    ConstraintLayout gamePad;
-    Random rnd = new Random();
-    ImageView mole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_calc);
 
-        gamePad = (ConstraintLayout)findViewById(R.id.gamePad);
+        ConstraintLayout keyPad = (ConstraintLayout)findViewById(R.id.keyPad);
+        ImageView num3 = new ImageView(this);
+        num3.setId(R.id.btn_3);
+        num3.setImageResource(R.drawable.num_3);
 
-        mole = new ImageView(this);
-        mole.setImageResource(R.drawable.mole);
-        ConstraintLayout.LayoutParams moleLayoutParams = new ConstraintLayout.LayoutParams(
+        ConstraintLayout.LayoutParams num3LayoutParams = new ConstraintLayout.LayoutParams(
                 WRAP_CONTENT, WRAP_CONTENT);
-        moleLayoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
-        moleLayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-        mole.setLayoutParams(moleLayoutParams);
-
-        mole.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Ok", Toast.LENGTH_LONG);
-                Log.i("Game", "Click");
-            }
-        });;
-
-        ViewTreeObserver vto = gamePad.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
+        num3LayoutParams.leftToRight = R.id.btn_2;
+        num3LayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        num3.setLayoutParams(num3LayoutParams);
+        num3.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onGlobalLayout() {
-                gamePad.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                maxX = gamePad.getMeasuredWidth();
-                maxY = gamePad.getMeasuredHeight();
-
-                buildGamePad();
+            public void onClick(View view) {
+                Log.i("btn", "click 3");
             }
         });
 
-    }
-
-    void buildGamePad() {
-        Log.i("geometry", "maxX= " + maxX + "maxY" + maxY);
-
-        gamePad.removeAllViews();
-
-        for(int h = 0; h < 5; h++) {
-
-            ImageView hole = new ImageView(this);
-            hole.setImageResource(R.drawable.hole);
-            // hole.setPadding(100,100,0,0);
-
-            ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                    WRAP_CONTENT, WRAP_CONTENT);
-
-            int x = rnd.nextInt(maxX - 250);
-            int y = rnd.nextInt(maxY - 100);
-            layoutParams.leftMargin = x;
-            layoutParams.topMargin = y;
-            layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
-            layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-
-            hole.setLayoutParams(layoutParams);
-
-            gamePad.addView(hole);
-        }
-
-        ImageView hole = new ImageView(this);
-        hole.setImageResource(R.drawable.hole);
-        // hole.setPadding(100,100,0,0);
-
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                WRAP_CONTENT, WRAP_CONTENT);
+        keyPad.addView(num3);
 
 
-        layoutParams.leftMargin = maxX - 250;
-        layoutParams.topMargin = maxY - 100;
-        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        ImageView num2 = (ImageView) findViewById(R.id.btn_2);
 
-        hole.setLayoutParams(layoutParams);
+        num2.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Log.i("btn", "click 2");
 
-        gamePad.addView(hole);
+                                    }
+                                });
+
+
 
     }
 
-    ImageView oldHole;
 
-    public void restart(View view) {
-        buildGamePad();
-    }
 
-    public void moveMole(View view) {
-//        if (oldHole != null)
-//            oldHole.setImageResource(R.drawable.hole);
-        // oldHole.setImageResource(R.drawable.mole);
 
-        int count = gamePad.getChildCount();
-        oldHole = (ImageView) gamePad.getChildAt(rnd.nextInt(count));
-
-        gamePad.removeView(mole);
-        ConstraintLayout.LayoutParams holeLayoutParams =
-                (ConstraintLayout.LayoutParams) oldHole.getLayoutParams();
-        ConstraintLayout.LayoutParams moleLayoutParams =
-                (ConstraintLayout.LayoutParams) mole.getLayoutParams();
-
-        moleLayoutParams.leftMargin = holeLayoutParams.leftMargin + 20;
-        moleLayoutParams.topMargin = holeLayoutParams.topMargin - 120;
-
-        mole.setLayoutParams(moleLayoutParams);
-
-        gamePad.addView(mole);
+    public void numClick_1(View view) {
+        Log.i("btn", "click 1");
     }
 }

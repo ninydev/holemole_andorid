@@ -9,56 +9,80 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.itstep.holemole.product.Product;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+    String[] arrCountriesNames = {"Ukraine" , "Poland", "Germany"};
+
+    ArrayList<Product> products = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calc);
+        setContentView(R.layout.begin_adapters);
 
-        ConstraintLayout keyPad = (ConstraintLayout)findViewById(R.id.keyPad);
-        ImageView num3 = new ImageView(this);
-        num3.setId(R.id.btn_3);
-        num3.setImageResource(R.drawable.num_3);
+        products.add(new Product("Gresha"));
+        products.add(new Product("Moloko"));
+        products.add(new Product("kefir"));
 
-        ConstraintLayout.LayoutParams num3LayoutParams = new ConstraintLayout.LayoutParams(
-                WRAP_CONTENT, WRAP_CONTENT);
-        num3LayoutParams.leftToRight = R.id.btn_2;
-        num3LayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-        num3.setLayoutParams(num3LayoutParams);
-        num3.setOnClickListener(new View.OnClickListener() {
+        ListView lst = findViewById(R.id.lstCountries);
+
+        ArrayAdapter<Product> adapterLst = new ArrayAdapter<>(this,
+                R.layout.product_item,
+                //android.R.layout.simple_list_item_1, // Стандартный вид отображения элемента списка
+                products);
+        lst.setAdapter(adapterLst);
+
+    }
+
+
+    private void adapters () {
+        // Создадим адаптер для листа
+        ListView lst = findViewById(R.id.lstCountries);
+        ArrayAdapter<String> adapterLst = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, // Стандартный вид отображения элемента списка
+                arrCountriesNames);
+        lst.setAdapter(adapterLst);
+
+        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Log.i("btn", "click 3");
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("Selected List ", "num: " + i);
             }
         });
 
-        keyPad.addView(num3);
+        // Создадим адаптер для выпадающего списка
+        Spinner spinner = findViewById(R.id.spinnerCountries);
+        ArrayAdapter<String> adapterSpinner =  new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item,
+                arrCountriesNames);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapterSpinner);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("Selected Spinner ", "num: " + i);
+            }
 
-        ImageView num2 = (ImageView) findViewById(R.id.btn_2);
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-        num2.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Log.i("btn", "click 2");
-
-                                    }
-                                });
-
-
-
+            }
+        });
     }
 
 
-
-
-    public void numClick_1(View view) {
-        Log.i("btn", "click 1");
-    }
 }

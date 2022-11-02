@@ -2,11 +2,30 @@ package com.itstep.holemole.product;
 
 
 public class Product {
-    private String name;
 
     public Product(String name) {
-        this.name = name;
+        this.name = name; vendor = "NoName";
     }
+
+    public Product(String name, String vendor) {
+        this.name = name; this.vendor = vendor;
+    }
+
+
+    private String vendor;
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+
+
+    private String name;
+
 
     public String getName() {
         return name;
@@ -19,7 +38,8 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "name='" + name + '\'' +
+                "vendor='" + vendor + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
